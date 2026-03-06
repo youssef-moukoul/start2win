@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Start2Win</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --orange: #ff6600;
+      --orange-bright: #ff8c00;
+      --black: #000000;
+      --dark: #0d0d0d;
+      --card: #111111;
+      --border: #1f1f1f;
+    }
+
+    body {
+      background: var(--black);
+      color: #fff;
+      font-family: 'Rajdhani', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+    }
+
+    /* ── TOP NOTICE ── */
+    .notice {
+      width: 100%;
+      background: #000;
+      border-bottom: 1px solid #1a1a1a;
+      text-align: center;
+      padding: 8px 16px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.75);
+      letter-spacing: 0.5px;
+    }
+
+    /* ── HEADER ── */
+    header {
+      width: 100%;
+      text-align: center;
+      padding: 48px 20px 20px;
+      position: relative;
+    }
+
+    .logo-glow {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2.4rem, 8vw, 5rem);
+      font-weight: 900;
+      color: var(--orange);
+      text-shadow:
+        0 0 20px rgba(255,102,0,0.8),
+        0 0 60px rgba(255,102,0,0.4),
+        0 0 100px rgba(255,102,0,0.2);
+      letter-spacing: 4px;
+      line-height: 1;
+      animation: pulseGlow 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes pulseGlow {
+      from { text-shadow: 0 0 20px rgba(255,102,0,0.7), 0 0 60px rgba(255,102,0,0.3); }
+      to   { text-shadow: 0 0 30px rgba(255,102,0,1),   0 0 80px rgba(255,102,0,0.6), 0 0 120px rgba(255,102,0,0.3); }
+    }
+
+    .logo-sub {
+      margin-top: 8px;
+      font-size: 13px;
+      letter-spacing: 6px;
+      color: rgba(255,255,255,0.35);
+      text-transform: uppercase;
+    }
+
+    /* ── SCAN LINE BG ── */
+    .hero-bg {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background:
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,102,0,0.015) 2px, rgba(255,102,0,0.015) 4px);
+    }
+
+    /* ── MAIN CONTENT ── */
+    main {
+      width: 100%;
+      max-width: 560px;
+      padding: 32px 20px 60px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--card);
+      border: 1px solid #222;
+      border-top: 3px solid var(--orange);
+      border-radius: 16px;
+      padding: 40px 36px;
+      box-shadow:
+        0 0 0 1px rgba(255,102,0,0.05),
+        0 20px 60px rgba(0,0,0,0.8),
+        0 0 40px rgba(255,102,0,0.06);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%; transform: translateX(-50%);
+      width: 60%; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--orange), transparent);
+    }
+
+    /* Badge */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,102,0,0.12);
+      border: 1px solid rgba(255,102,0,0.3);
+      color: var(--orange);
+      font-size: 11px;
+      letter-spacing: 2px;
+      padding: 5px 12px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .badge span { font-size: 14px; }
+
+    .card-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(1.2rem, 4vw, 1.6rem);
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+    .card-title em {
+      color: var(--orange);
+      font-style: normal;
+    }
+
+    .card-desc {
+      font-size: 15px;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #2a2a2a, transparent);
+      margin: 24px 0;
+    }
+
+    /* ── FORM ── */
+    #email-form { display: flex; flex-direction: column; gap: 14px; }
+
+    .input-wrap {
+      position: relative;
+    }
+    .input-icon {
+      position: absolute;
+      left: 14px; top: 50%; transform: translateY(-50%);
+      color: rgba(255,102,0,0.5);
+      font-size: 16px;
+      pointer-events: none;
+    }
+    input[type="email"] {
+      width: 100%;
+      background: #0a0a0a;
+      border: 1px solid #282828;
+      border-radius: 10px;
+      color: #fff;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      padding: 14px 16px 14px 42px;
+      outline: none;
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+    input[type="email"]::placeholder { color: rgba(255,255,255,0.2); }
+    input[type="email"]:focus {
+      border-color: var(--orange);
+      box-shadow: 0 0 0 3px rgba(255,102,0,0.12);
+    }
+
+    .error-msg {
+      font-size: 12px;
+      color: #ff4444;
+      display: none;
+      padding-left: 4px;
+    }
+    .error-msg.show { display: block; }
+
+    /* ── BUTTONS ── */
+    .btn-unlock {
+      width: 100%;
+      background: linear-gradient(135deg, #ff6600, #ff8c00);
+      color: #000;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      border: none;
+      border-radius: 10px;
+      padding: 15px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.15s, box-shadow 0.15s, opacity 0.25s, background 0.25s;
+      box-shadow: 0 4px 20px rgba(255,102,0,0.35);
+    }
+    .btn-unlock:disabled {
+      background: #2a2a2a;
+      color: rgba(255,255,255,0.25);
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none !important;
+    }
+    .btn-unlock::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 60%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+      transition: left 0.4s;
+    }
+    .btn-unlock:not(:disabled):hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(255,102,0,0.5); }
+    .btn-unlock:not(:disabled):hover::after { left: 150%; }
+    .btn-unlock:not(:disabled):active { transform: translateY(0); }
+
+    /* ── CPA BUTTON ── */
+    #cpa-section {
+      display: none;
+      animation: fadeInUp 0.6s cubic-bezier(0.22,1,0.36,1) forwards;
+    }
+    #cpa-section.show { display: block; }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .success-msg {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(0,200,100,0.08);
+      border: 1px solid rgba(0,200,100,0.2);
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      color: #00c864;
+    }
+
+    .btn-cpa {
+      display: block;
+      width: 100%;
+      background: linear-gradient(135deg, #ff6600, #ff4400);
+      color: #fff;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-decoration: none;
+      text-align: center;
+      border-radius: 12px;
+      padding: 18px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.15s, box-shadow 0.2s;
+      box-shadow:
+        0 6px 30px rgba(255,102,0,0.45),
+        inset 0 1px 0 rgba(255,255,255,0.1);
+      animation: ctaPulse 2s ease-in-out infinite;
+    }
+    @keyframes ctaPulse {
+      0%, 100% { box-shadow: 0 6px 30px rgba(255,102,0,0.45); }
+      50%       { box-shadow: 0 6px 50px rgba(255,102,0,0.8), 0 0 80px rgba(255,102,0,0.3); }
+    }
+    .btn-cpa:hover { transform: translateY(-3px); }
+    .btn-cpa::before {
+      content: '🔓';
+      margin-right: 10px;
+      font-size: 18px;
+    }
+
+    .cpa-hint {
+      text-align: center;
+      font-size: 11px;
+      color: rgba(255,255,255,0.25);
+      margin-top: 12px;
+      letter-spacing: 1px;
+    }
+
+    /* ── FEATURES ── */
+    .features {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 28px;
+    }
+    .feature {
+      flex: 1;
+      text-align: center;
+      padding: 14px 8px;
+      background: rgba(255,102,0,0.04);
+      border: 1px solid #1c1c1c;
+      border-radius: 10px;
+    }
+    .feature-icon { font-size: 22px; margin-bottom: 6px; }
+    .feature-label { font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: 1px; text-transform: uppercase; }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 24px 20px 32px;
+      text-align: center;
+      z-index: 1;
+    }
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+    .footer-links a {
+      color: rgba(255,102,0,0.7);
+      font-size: 12px;
+      text-decoration: none;
+      letter-spacing: 0.5px;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: #ff6600; }
+    .footer-dot { color: #333; font-size: 12px; }
+    .footer-copy {
+      font-size: 11px;
+      color: rgba(255,255,255,0.15);
+      letter-spacing: 1px;
+    }
+
+    /* ── MODAL OVERLAY ── */
+    #modal-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+    }
+    #modal-overlay.active { display: block; }
+
+    /* ── MODAL ── */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -48%) scale(0.96);
+      width: 90%; max-width: 600px;
+      max-height: 80vh;
+      background: #111;
+      border: 1px solid #222;
+      border-top: 3px solid #ff6600;
+      border-radius: 16px;
+      overflow: hidden;
+      z-index: 101;
+      opacity: 0;
+      transition: opacity 0.25s, transform 0.25s;
+      flex-direction: column;
+    }
+    .modal.active {
+      display: flex;
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 24px;
+      border-bottom: 1px solid #1f1f1f;
+      background: #0d0d0d;
+      flex-shrink: 0;
+    }
+    .modal-header h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 16px;
+      color: #ff6600;
+      letter-spacing: 1px;
+    }
+    .modal-close {
+      background: none;
+      border: 1px solid #333;
+      color: rgba(255,255,255,0.5);
+      width: 30px; height: 30px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .modal-close:hover { border-color: #ff6600; color: #ff6600; }
+    .modal-body {
+      padding: 24px;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .modal-body h3 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 11px;
+      color: #ff6600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin: 22px 0 8px;
+    }
+    .modal-body p {
+      font-size: 14px;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.7;
+    }
+    .modal-date {
+      font-size: 12px;
+      color: rgba(255,102,0,0.5);
+      margin-bottom: 16px;
+    }
+
+    /* ── CONTACT FORM ── */
+    .contact-grid { display: flex; gap: 12px; margin-bottom: 24px; }
+    .contact-info-box {
+      flex: 1; background: rgba(255,102,0,0.05);
+      border: 1px solid #1f1f1f; border-radius: 10px;
+      padding: 14px; text-align: center;
+    }
+    .contact-icon { font-size: 20px; margin-bottom: 6px; }
+    .contact-label { font-size: 10px; color: rgba(255,255,255,0.3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+    .contact-value { font-size: 13px; color: #ff6600; font-weight: 600; }
+    .contact-form { display: flex; flex-direction: column; gap: 14px; }
+    .cf-group { display: flex; flex-direction: column; gap: 6px; }
+    .cf-group label { font-size: 12px; color: rgba(255,255,255,0.4); letter-spacing: 1px; text-transform: uppercase; }
+    .cf-group input, .cf-group select, .cf-group textarea {
+      background: #0a0a0a; border: 1px solid #252525;
+      border-radius: 8px; color: #fff;
+      font-family: 'Rajdhani', sans-serif; font-size: 15px;
+      padding: 12px 14px; outline: none; resize: none;
+      transition: border-color 0.2s;
+    }
+    .cf-group input:focus, .cf-group select:focus, .cf-group textarea:focus { border-color: #ff6600; }
+    .cf-group select option { background: #111; }
+    .btn-contact-send {
+      background: linear-gradient(135deg, #ff6600, #ff8c00);
+      color: #000; font-family: 'Orbitron', sans-serif;
+      font-size: 13px; font-weight: 700; letter-spacing: 1px;
+      border: none; border-radius: 8px; padding: 13px;
+      cursor: pointer; transition: transform 0.15s;
+    }
+    .btn-contact-send:hover { transform: translateY(-2px); }
+    .modal-body::-webkit-scrollbar { width: 4px; }
+    .modal-body::-webkit-scrollbar-track { background: #0a0a0a; }
+    .modal-body::-webkit-scrollbar-thumb { background: #ff6600; border-radius: 4px; }
+
+    @media (max-width: 480px) {
+      .card { padding: 28px 20px; }
+      .features { flex-wrap: wrap; }
+      .feature { min-width: 45%; }
+      .contact-grid { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="hero-bg"></div>
+
+<!-- TOP NOTICE -->
+<div class="notice">
+  We may ask you to enter your email twice for verification.
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="logo-glow">START2WIN</div>
+  <div class="logo-sub">Gaming Rewards Platform</div>
+</header>
+
+<!-- MAIN -->
+<main>
+  <div class="card">
+
+    <div class="badge"><span>⚡</span> Exclusive Access</div>
+
+    <h1 class="card-title">advanced access — <em>vip level</em></h1>
+    <p class="card-desc">Enable your account to unlock premium features and exclusive content. </p>
+
+    <div class="divider"></div>
+
+    <!-- EMAIL FORM -->
+    <form id="email-form" novalidate>
+      <div class="input-wrap">
+        <span class="input-icon">✉</span>
+        <input type="email" id="email-input" placeholder="your@email.com" autocomplete="email"/>
+      </div>
+      <div class="error-msg" id="error-msg">⚠ Please enter a valid email address.</div>
+      <button type="submit" class="btn-unlock" id="unlock-btn" disabled> continue →</button>
+    </form>
+
+    <!-- CPA SECTION (hidden by default) -->
+    <div id="cpa-section">
+      <div class="success-msg">
+        ✅ Email verified! Your reward is ready.
+      </div>
+      <a href="#" id="cpa-btn" class="btn-cpa">Access Final Step</a>
+      <!-- ☝️ Replace # with your CPA link -->
+      <p class="cpa-hint">🔒 SECURE · INSTANT ACCESS</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon">🎮</div>
+        <div class="feature-label">play</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🏆</div>
+        <div class="feature-label">win</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">⚡</div>
+        <div class="feature-label">speed</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🔒</div>
+        <div class="feature-label">safe</div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <div class="footer-links">
+    <a href="#" onclick="openModal('terms');return false;">Terms &amp; Conditions</a>
+    <span class="footer-dot">·</span>
+    <a href="#" onclick="openModal('contact');return false;">Contact</a>
+    <span class="footer-dot">·</span>
+    <a href="#" onclick="openModal('privacy');return false;">Privacy Policy</a>
+    <span class="footer-dot">·</span>
+  </div>
+  <div class="footer-copy">© 2026 Start2Win · All rights reserved</div>
+</footer>
+
+<!-- OVERLAY -->
+<div id="modal-overlay" onclick="closeModal()"></div>
+
+<!-- TERMS -->
+<div id="modal-terms" class="modal">
+  <div class="modal-header">
+    <h2>Terms &amp; Conditions</h2>
+    <button class="modal-close" onclick="closeModal()">✕</button>
+  </div>
+  <div class="modal-body">
+    <p class="modal-date">Last updated: January 1, 2026</p>
+    <h3>1. Acceptance of Terms</h3>
+    <p>By accessing and using Start2Win ("the Platform"), you agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms, you may not use our services.</p>
+    <h3>2. Description of Service</h3>
+    <p>Start2Win is a gaming rewards platform that provides users with access to exclusive tools, rewards, and promotions related to online gaming titles including Free Fire, PUBG, and other titles.</p>
+    <h3>3. Eligibility</h3>
+    <p>You must be at least 18 years of age to use this platform. By using Start2Win, you represent that you are at least 18 years old and have the legal capacity to enter into these terms.</p>
+    <h3>4. User Accounts &amp; Email</h3>
+    <p>When you provide your email address, you agree to receive communications from Start2Win including reward notifications, verification emails, and promotional content. You may unsubscribe at any time.</p>
+    <h3>5. Rewards &amp; Offers</h3>
+    <p>All rewards and offers are subject to availability. Start2Win reserves the right to modify, suspend, or terminate any reward program at any time without prior notice. Rewards cannot be exchanged for cash.</p>
+    <h3>6. Prohibited Activities</h3>
+    <p>Users are prohibited from creating multiple accounts, using bots, attempting to manipulate the reward system, or engaging in any fraudulent activity on the platform.</p>
+    <h3>7. Intellectual Property</h3>
+    <p>All content on Start2Win including logos, text, graphics, and design elements are the intellectual property of Start2Win and may not be reproduced without written permission.</p>
+    <h3>8. Limitation of Liability</h3>
+    <p>Start2Win shall not be liable for any indirect, incidental, or consequential damages arising from your use of the platform.</p>
+    <h3>9. Changes to Terms</h3>
+    <p>We reserve the right to update these Terms at any time. Continued use of the platform after changes constitutes acceptance of the new terms.</p>
+    <h3>10. Governing Law</h3>
+    <p>These Terms are governed by applicable international law. Any disputes shall be resolved through binding arbitration.</p>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div id="modal-contact" class="modal">
+  <div class="modal-header">
+    <h2>Contact Us</h2>
+    <button class="modal-close" onclick="closeModal()">✕</button>
+  </div>
+  <div class="modal-body">
+    <p style="color:rgba(255,255,255,0.5);margin-bottom:24px;">Have a question or need support? Fill out the form and our team will reply within 24 hours.</p>
+    <div class="contact-grid">
+      <div class="contact-info-box"><div class="contact-icon">📧</div><div class="contact-label">Email</div><div class="contact-value">support@start2win.gg</div></div>
+      <div class="contact-info-box"><div class="contact-icon">⏱</div><div class="contact-label">Response Time</div><div class="contact-value">Within 24 hours</div></div>
+    </div>
+    <div class="contact-form">
+      <div class="cf-group"><label>Your Name</label><input type="text" placeholder="John Doe" /></div>
+      <div class="cf-group"><label>Email Address</label><input type="email" placeholder="you@email.com" /></div>
+      <div class="cf-group"><label>Subject</label>
+        <select><option>General Inquiry</option><option>Reward Issue</option><option>Account Problem</option><option>Partnership</option><option>Other</option></select>
+      </div>
+      <div class="cf-group"><label>Message</label><textarea placeholder="Describe your issue or question..." rows="4"></textarea></div>
+      <button class="btn-contact-send" onclick="fakeSend()">Send Message →</button>
+      <p id="contact-sent" style="display:none;color:#00c864;text-align:center;margin-top:12px;font-size:14px;">✅ Message sent! We'll reply within 24h.</p>
+    </div>
+  </div>
+</div>
+
+<!-- PRIVACY -->
+<div id="modal-privacy" class="modal">
+  <div class="modal-header">
+    <h2>Privacy Policy</h2>
+    <button class="modal-close" onclick="closeModal()">✕</button>
+  </div>
+  <div class="modal-body">
+    <p class="modal-date">Last updated: January 1, 2026</p>
+    <h3>1. Information We Collect</h3>
+    <p>We collect information you provide directly to us, such as your email address when you register or use our platform. We may also collect usage data including IP address, browser type, and interaction data.</p>
+    <h3>2. How We Use Your Information</h3>
+    <p>Your information is used to provide and improve our services, send reward notifications and promotional emails, verify your identity, and prevent fraud. We do not sell your personal data to third parties.</p>
+    <h3>3. Cookies</h3>
+    <p>Start2Win uses cookies to enhance your experience, remember your preferences, and analyze platform traffic. You can disable cookies in your browser settings, though this may affect platform functionality.</p>
+    <h3>4. Data Security</h3>
+    <p>We implement industry-standard security measures including SSL encryption to protect your data. However, no method of transmission over the internet is 100% secure.</p>
+    <h3>5. Your Rights</h3>
+    <p>You have the right to access, correct, or delete your personal data at any time by contacting us at support@start2win.gg.</p>
+    <h3>6. Contact</h3>
+    <p>For privacy inquiries, contact our Data Protection Officer at privacy@start2win.gg.</p>
+  </div>
+</div>
+
+<script>
+  const form        = document.getElementById('email-form');
+  const emailInput  = document.getElementById('email-input');
+  const errorMsg    = document.getElementById('error-msg');
+  const cpaSection  = document.getElementById('cpa-section');
+  const unlockBtn   = document.getElementById('unlock-btn');
+
+  // ── MODAL FUNCTIONS ──
+  function openModal(id) {
+    document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
+    document.getElementById('modal-overlay').classList.add('active');
+    document.getElementById('modal-' + id).classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal() {
+    document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
+    document.getElementById('modal-overlay').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  function fakeSend() {
+    document.getElementById('contact-sent').style.display = 'block';
+    setTimeout(() => { document.getElementById('contact-sent').style.display = 'none'; }, 4000);
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
+  });
+  const CPA_LINK = 'https://www.youtube.com/watch?v=DLMkUr_GIIc&list=RDEGEfKiS6O0g&index=10&pp=8AUB';
+  const STORAGE_KEY = 'start2win_leads';
+
+  function isValidEmail(val) {
+    return val.includes('@') && val.includes('.') && val.trim().length > 5;
+  }
+
+  // Active / désactive le bouton en temps réel
+  emailInput.addEventListener('input', function() {
+    const valid = isValidEmail(this.value.trim());
+    unlockBtn.disabled = !valid;
+    if (valid) {
+      errorMsg.classList.remove('show');
+      this.style.borderColor = '';
+    }
+  });
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const val = emailInput.value.trim();
+
+    if (!isValidEmail(val)) {
+      errorMsg.classList.add('show');
+      emailInput.style.borderColor = '#ff4444';
+      return;
+    }
+
+    // Sauvegarder le lead pour le dashboard admin
+    try {
+      const leads = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      leads.push({
+        id: 'lead_' + Date.now() + '_' + Math.random().toString(36).slice(2),
+        email: val,
+        source: 'landing',
+        date: new Date().toISOString()
+      });
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(leads));
+    } catch (e) { console.warn('Lead non sauvegardé:', e); }
+
+    // Redirection vers le lien CPA
+    window.location.href = CPA_LINK;
+  });
+</script>
+</body>
+</html>
